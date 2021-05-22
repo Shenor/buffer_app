@@ -1,28 +1,41 @@
 import sys
 import json
-from datetime import datetime
+import tkinter as tk
+from datetime import datetime 
 from PyQt5 import QtWidgets, uic
+
 
 class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()
         uic.loadUi('./view/main.ui', self)
+        
+        # Set Clipboard
+        self.clipboard = app.clipboard()
 
         self.pushButton.setText("Text changed")
         self.pushButton.clicked.connect(self.printButtonPressed)
-
         self.show()
+
+        self.clipboard.dataChanged.connect(self.detectClipboard)
 
     def printButtonPressed(self):
         # This is executed when the button is pressed
         self.listWidget.addItem('asd')
         print('printButtonPressed')
+    
+    def detectClipboard(self):
+        text = self.clipboard.text()
+        self.listWidget.addItem(text)
+        print(text)
 
 # GUI Variables #
 app = QtWidgets.QApplication(sys.argv)
 window = Ui()
 app.exec_()
 
+# Clipboard
+# clipboard = app.clipboard()
 
 # Json format variables #
 # now = datetime.now()
